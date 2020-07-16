@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:currency_converter/currencies.dart';
+import 'package:currency_converter/tabs/converter/converter.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -49,7 +52,7 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     CurrencyWidget(Colors.deepOrange),
-    Text('TBA'),
+    ConverterWidget(),
   ];
 
   @override
