@@ -29,7 +29,7 @@ class _ConverterWidget extends State<ConverterWidget> {
   String amount;
   final amountController = TextEditingController();
 
-  _ConverterWidget(): super() {
+  _ConverterWidget() : super() {
     amount = '';
     converted = '';
     CurrencyService service = new CurrencyService();
@@ -44,7 +44,8 @@ class _ConverterWidget extends State<ConverterWidget> {
     });
 
     service.getClientInfo().then((QueryResult result) {
-      List clientCurrencies = result.data['client']['ipAddress']['country']['currencies'];
+      List clientCurrencies =
+          result.data['client']['ipAddress']['country']['currencies'];
       if (clientCurrencies.length > 0) {
         setState(() {
           fromCurrency = clientCurrencies[0]['isoCode'];
@@ -66,13 +67,18 @@ class _ConverterWidget extends State<ConverterWidget> {
   }
 
   convert() {
-    ConvertService service = new ConvertService();
+    ConvertService service = ConvertService();
+    print(fromCurrency);
+    print(toCurrency);
     service.convertCurrency(fromCurrency, toCurrency).then((QueryResult value) {
+      print(value);
       if (value.data != null && value.data['exchange'] != null) {
         print(value.data['exchange']);
         print(amount);
         setState(() {
-          converted = (double.parse(amount) * double.parse(value.data['exchange']['rate'])).toStringAsFixed(2);
+          converted = (double.parse(amount) *
+                  double.parse(value.data['exchange']['rate']))
+              .toStringAsFixed(2);
         });
       }
     });
@@ -80,35 +86,30 @@ class _ConverterWidget extends State<ConverterWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: <Widget>[Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        new CurrencySelectWidget(fromCurrency, items, setFromCurrency),
-        new CurrencySelectWidget(toCurrency, items, setToCurrency),
-        RaisedButton(
-          onPressed: convert,
-          child: const Text('Convert', style: TextStyle(fontSize: 15)),
-        ),
-      ],
-    ),
+    return Column(children: <Widget>[
       Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-                width: 100,
-                child: TextField(
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Amount'
-                  ),
-                  onChanged: (text) {
-                    amount = text;
-                  },
-                )
-            ),
-            new Text(converted),
-          ]
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          CurrencySelectWidget(fromCurrency, items, setFromCurrency),
+          CurrencySelectWidget(toCurrency, items, setToCurrency),
+          RaisedButton(
+            onPressed: convert,
+            child: const Text('Convert', style: TextStyle(fontSize: 15)),
+          ),
+        ],
       ),
+      Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        Container(
+            width: 100,
+            child: TextField(
+              decoration: InputDecoration(
+                  border: InputBorder.none, hintText: 'Amount'),
+              onChanged: (text) {
+                amount = text;
+              },
+            )),
+        new Text(converted),
+      ]),
     ]);
   }
 }

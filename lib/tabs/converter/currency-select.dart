@@ -2,9 +2,10 @@ import 'package:currency_converter/tabs/converter/converter.dart';
 import 'package:flutter/material.dart';
 
 class CurrencySelectWidget extends StatelessWidget {
-  String dropdownValue;
-  List<Currency> items = [];
-  SetDropdownValue setDropdownValue;
+  final String dropdownValue;
+  final List<Currency> items;
+  final SetDropdownValue setDropdownValue;
+
   CurrencySelectWidget(this.dropdownValue, this.items, this.setDropdownValue);
 
   @override
@@ -22,8 +23,7 @@ class CurrencySelectWidget extends StatelessWidget {
       onChanged: (String newValue) {
         setDropdownValue(newValue);
       },
-      items: items
-          .map<DropdownMenuItem<String>>((Currency value) {
+      items: items.map<DropdownMenuItem<String>>((Currency value) {
         return DropdownMenuItem<String>(
           value: value.isoCode,
           child: Text(value.isoCode),

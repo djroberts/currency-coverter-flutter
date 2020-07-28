@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:currency_converter/currencies.dart';
 import 'package:currency_converter/tabs/converter/converter.dart';
+import 'package:currency_converter/tabs/currencies/currencies.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -67,15 +67,14 @@ class _HomeState extends State<Home> {
           currentIndex: _currentIndex,
           items: [
             BottomNavigationBarItem(
-              icon: new Icon(Icons.mail),
-              title: new Text('Currencies'),
+              icon: Icon(Icons.mail),
+              title: Text('Currencies'),
             ),
             BottomNavigationBarItem(
-              icon: new Icon(Icons.home),
-              title: new Text('Converter'),
+              icon: Icon(Icons.home),
+              title: Text('Converter'),
             ),
-          ]
-      ),
+          ]),
     );
   }
 

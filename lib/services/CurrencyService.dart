@@ -14,22 +14,20 @@ class CurrencyService {
 """;
 
   final String readClient = """
-  query{
-   client {
-            ipAddress {
-                country {
-                    name
-                    currencies {
-                        name
-                        isoCode
-                    }
-                }
+    query{
+      client {
+        ipAddress {
+          country {
+            name
+            currencies {
+              name
+              isoCode
             }
+          }
         }
-  }
+      }
+    }
 """;
-
-
 
   final HttpLink httpLink = HttpLink(
     uri: 'https://api.everbase.co/graphql',
@@ -47,8 +45,7 @@ class CurrencyService {
   Future<QueryResult> getCurrencies() {
     return _client.query(QueryOptions(
       documentNode: gql(readCurrencies),
-      variables: {
-      },
+      variables: {},
       pollInterval: 10,
     ));
   }
@@ -56,8 +53,7 @@ class CurrencyService {
   Future<QueryResult> getClientInfo() {
     return _client.query(QueryOptions(
       documentNode: gql(readClient),
-      variables: {
-      },
+      variables: {},
       pollInterval: 10,
     ));
   }

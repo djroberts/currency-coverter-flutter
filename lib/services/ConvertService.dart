@@ -11,7 +11,6 @@ class ConvertService {
     }
 """;
 
-
   final HttpLink httpLink = HttpLink(
     uri: 'https://z69m3.sse.codesandbox.io',
   );
