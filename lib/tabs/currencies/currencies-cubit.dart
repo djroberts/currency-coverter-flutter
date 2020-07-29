@@ -9,7 +9,9 @@ class CurrenciesCubit extends Cubit<List<OverviewCurrency>> {
   void fetchCurrencies() {
     ConvertService().getCurrencies().then((QueryResult queryResult) {
       List<OverviewCurrency> overviewCurrencies =
-          queryResult.data['currencies'].map<OverviewCurrency>((item) {
+      queryResult.data['currencies'].where((item) {
+        return item['toDollar'] != null;
+      }).map<OverviewCurrency>((item) {
         return OverviewCurrency(
           name: item['name'],
           toDollar: item['toDollar'] != null ? item['toDollar'].toDouble() : null,

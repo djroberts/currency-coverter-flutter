@@ -14,8 +14,8 @@ class CurrenciesView extends StatelessWidget {
             itemCount: currencies.length,
             itemBuilder: (BuildContext context, int index) {
               final currency = currencies[index];
-              print(currency.toDollar);
               String o = currency.name;
+
               if (currency.toDollar != null) {
                 o += ' ' + currency.toDollar.toString();
               }

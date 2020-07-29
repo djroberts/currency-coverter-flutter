@@ -43,17 +43,9 @@ class _ConverterWidget extends State<ConverterWidget> {
     });
 
     ConvertService().getClientInfo().then((QueryResult result) {
-      print(result.data);
       setState(() {
         fromCurrency = result.data['client']['currency'];
       });
-//      List clientCurrencies =
-//          result.data['client']['ipAddress']['country']['currencies'];
-//      if (clientCurrencies.length > 0) {
-//        setState(() {
-//          fromCurrency = clientCurrencies[0]['isoCode'];
-//        });
-//      }
     });
   }
 
@@ -72,10 +64,7 @@ class _ConverterWidget extends State<ConverterWidget> {
   convert() {
     ConvertService service = ConvertService();
     service.convertCurrency(fromCurrency, toCurrency).then((QueryResult value) {
-      print(value);
       if (value.data != null && value.data['exchange'] != null) {
-        print(value.data['exchange']);
-        print(amount);
         setState(() {
           converted = (double.parse(amount) *
                   double.parse(value.data['exchange']['rate']))
