@@ -1,12 +1,17 @@
-import 'package:currency_converter/tabs/converter/converter.dart';
+import 'package:currency_converter/models/currency.dart';
 import 'package:flutter/material.dart';
 
-class CurrencySelectWidget extends StatelessWidget {
+typedef void SetDropdownValue(String value);
+
+class CurrencySelect extends StatelessWidget {
   final String dropdownValue;
   final List<Currency> items;
   final SetDropdownValue setDropdownValue;
 
-  CurrencySelectWidget(this.dropdownValue, this.items, this.setDropdownValue);
+  CurrencySelect(
+      {@required this.dropdownValue,
+      @required this.items,
+      @required this.setDropdownValue});
 
   @override
   Widget build(BuildContext context) {
