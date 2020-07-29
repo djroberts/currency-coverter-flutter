@@ -1,7 +1,6 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-class ConvertService {
-  final String readCurrencies = """
+String readCurrencies = """
     query{
       currencies {
         id
@@ -12,6 +11,8 @@ class ConvertService {
       }
     }
   """;
+
+class ConvertService {
 
   final String readConversion = """
    query Exchange(\$currency: String!, \$toCurrency: String!) {

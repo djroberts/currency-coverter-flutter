@@ -9,7 +9,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   final HttpLink httpLink = HttpLink(
-    uri: 'https://api.everbase.co/graphql',
+    uri: 'https://z69m3.sse.codesandbox.io',
   );
 
   final Link link = httpLink;

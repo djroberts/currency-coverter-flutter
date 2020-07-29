@@ -4,17 +4,26 @@ import 'package:currency_converter/tabs/currencies/currencies.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class CurrenciesCubit extends Cubit<List<OverviewCurrency>> {
-  CurrenciesCubit() : super([]);
+  final GraphQLClient client;
+
+  CurrenciesCubit(this.client) : super([]);
 
   void fetchCurrencies() {
-    ConvertService().getCurrencies().then((QueryResult queryResult) {
+    client
+        .query(QueryOptions(
+      documentNode: gql(readCurrencies),
+      variables: {},
+      pollInterval: 10,
+    ))
+        .then((QueryResult queryResult) {
       List<OverviewCurrency> overviewCurrencies =
-      queryResult.data['currencies'].where((item) {
+          queryResult.data['currencies'].where((item) {
         return item['toDollar'] != null;
       }).map<OverviewCurrency>((item) {
         return OverviewCurrency(
           name: item['name'],
-          toDollar: item['toDollar'] != null ? item['toDollar'].toDouble() : null,
+          toDollar:
+              item['toDollar'] != null ? item['toDollar'].toDouble() : null,
         );
       }).toList();
 

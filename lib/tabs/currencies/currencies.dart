@@ -4,6 +4,7 @@ import 'package:currency_converter/tabs/currencies/currencies-cubit.dart';
 import 'package:currency_converter/tabs/currencies/currencies-view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 class OverviewCurrency {
   final String name;
@@ -19,9 +20,12 @@ class CurrencyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => CurrenciesCubit(),
-      child: CurrenciesView(),
-    );
+    return GraphQLConsumer(
+        builder: (GraphQLClient client) {
+          return BlocProvider(
+            create: (_) => CurrenciesCubit(client),
+            child: CurrenciesView(),
+          );;
+        });
   }
 }
