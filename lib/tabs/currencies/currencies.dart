@@ -1,6 +1,16 @@
-import 'package:currency_converter/services/CurrencyService.dart';
+import 'dart:ffi';
+
+import 'package:currency_converter/tabs/currencies/currencies-cubit.dart';
+import 'package:currency_converter/tabs/currencies/currencies-view.dart';
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class OverviewCurrency {
+  final String name;
+  final double toDollar;
+
+  OverviewCurrency({this.name, this.toDollar});
+}
 
 class CurrencyWidget extends StatelessWidget {
   final Color color;
@@ -9,33 +19,9 @@ class CurrencyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<QueryResult>(
-      future: new CurrencyService().getCurrencies(),
-      builder: (BuildContext context, AsyncSnapshot<QueryResult> queryResult) {
-        QueryResult result = queryResult.data;
-
-        if (result == null || result.loading) {
-          return Text('Loading');
-        }
-
-        if (result.hasException) {
-          return Text(result.exception.toString());
-        }
-
-        List currencies = result.data['currencies'];
-
-        return ListView.builder(
-            itemCount: currencies.length,
-            itemBuilder: (context, index) {
-              final currency = currencies[index];
-              String o = currency['name'];
-              if (currency['toDollar'] != null) {
-                o += ' ' + currency['toDollar'].toString();
-              }
-
-              return Text(o);
-            });
-      },
+    return BlocProvider(
+      create: (_) => CurrenciesCubit(),
+      child: CurrenciesView(),
     );
   }
 }

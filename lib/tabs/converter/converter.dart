@@ -1,5 +1,4 @@
 import 'package:currency_converter/services/ConvertService.dart';
-import 'package:currency_converter/services/CurrencyService.dart';
 import 'package:currency_converter/tabs/converter/currency-select.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -32,8 +31,8 @@ class _ConverterWidget extends State<ConverterWidget> {
   _ConverterWidget() : super() {
     amount = '';
     converted = '';
-    CurrencyService service = new CurrencyService();
-    service.getCurrencies().then((QueryResult result) {
+
+    ConvertService().getCurrencies().then((QueryResult result) {
       List<Currency> temp = result.data['currencies'].map<Currency>((item) {
         return new Currency(item['id'], item['isoCode'], item['name']);
       }).toList();
@@ -43,14 +42,18 @@ class _ConverterWidget extends State<ConverterWidget> {
       });
     });
 
-    service.getClientInfo().then((QueryResult result) {
-      List clientCurrencies =
-          result.data['client']['ipAddress']['country']['currencies'];
-      if (clientCurrencies.length > 0) {
-        setState(() {
-          fromCurrency = clientCurrencies[0]['isoCode'];
-        });
-      }
+    ConvertService().getClientInfo().then((QueryResult result) {
+      print(result.data);
+      setState(() {
+        fromCurrency = result.data['client']['currency'];
+      });
+//      List clientCurrencies =
+//          result.data['client']['ipAddress']['country']['currencies'];
+//      if (clientCurrencies.length > 0) {
+//        setState(() {
+//          fromCurrency = clientCurrencies[0]['isoCode'];
+//        });
+//      }
     });
   }
 
@@ -68,8 +71,6 @@ class _ConverterWidget extends State<ConverterWidget> {
 
   convert() {
     ConvertService service = ConvertService();
-    print(fromCurrency);
-    print(toCurrency);
     service.convertCurrency(fromCurrency, toCurrency).then((QueryResult value) {
       print(value);
       if (value.data != null && value.data['exchange'] != null) {

@@ -1,6 +1,18 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ConvertService {
+  final String readCurrencies = """
+    query{
+      currencies {
+        id
+        isoCode
+        name
+        unitSymbols
+        toDollar
+      }
+    }
+  """;
+
   final String readConversion = """
    query Exchange(\$currency: String!, \$toCurrency: String!) {
         exchange(currency: \$currency, toCurrency: \$toCurrency) {
@@ -9,7 +21,15 @@ class ConvertService {
             rate
         }
     }
-""";
+  """;
+
+  final String readClient = """
+    query{
+      client {
+        currency
+      }
+    }
+  """;
 
   final HttpLink httpLink = HttpLink(
     uri: 'https://z69m3.sse.codesandbox.io',
@@ -24,6 +44,14 @@ class ConvertService {
     );
   }
 
+  Future<QueryResult> getCurrencies() {
+    return _client.query(QueryOptions(
+      documentNode: gql(readCurrencies),
+      variables: {},
+      pollInterval: 10,
+    ));
+  }
+
   Future<QueryResult> convertCurrency(String from, String to) {
     return _client.query(QueryOptions(
       documentNode: gql(readConversion),
@@ -31,6 +59,13 @@ class ConvertService {
         'currency': from,
         'toCurrency': to,
       },
+    ));
+  }
+
+  Future<QueryResult> getClientInfo() {
+    return _client.query(QueryOptions(
+      documentNode: gql(readClient),
+      variables: {},
     ));
   }
 }
